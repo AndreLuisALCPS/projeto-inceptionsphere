@@ -2,7 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
-const db = require('./db');
+const db = require('./app/db');
 
 const app = express();
 
@@ -17,9 +17,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Rotas
-const indexRouter = require('./routes/index');
-const authRouter = require('./routes/auth');
-const productRouter = require('./routes/product');
+const indexRouter = require('./app/routes/index');
+const authRouter = require('./app/routes/auth');
+const productRouter = require('./app/routes/product');
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
