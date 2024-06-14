@@ -1,57 +1,71 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const path = require('path');
 
 router.get('/', (req, res) => {
-    db.all('SELECT * FROM products', (err, products) => {
+    db.all(`SELECT * FROM products`, (err, products) => {
         if (err) {
-            return res.send('Error retrieving products');
+            return res.sendStatus(500);
         }
-        res.render('products', { products });
+        res.sendFile(path.join(__dirname, '../views/products.html'));
     });
 });
 
 router.get('/add', (req, res) => {
-    res.render('product');
+    if (!req.session.user) {
+        return res.redirect('/auth/login');
+    }
+
+    res.sendFile(path.join(__dirname, '../views/product.html'));
 });
 
 router.post('/add', (req, res) => {
     const { name, image, description, price } = req.body;
+    const userId = req.session.user.id;
 
-    db.run('INSERT INTO products (name, image, description, price) VALUES (?, ?, ?, ?)', 
-    [name, image, description, price], function(err) {
+    db.run(`INSERT INTO products (name, image, description, price, user_id) VALUES (?, ?, ?, ?, ?)`, [name, image, description, price, userId], (err) => {
         if (err) {
-            return res.send('Error adding product');
+            return res.redirect('/product/add');
         }
         res.redirect('/product');
     });
 });
 
 router.get('/edit/:id', (req, res) => {
-    db.get('SELECT * FROM products WHERE id = ?', [req.params.id], (err, product) => {
+    if (!req.session.user) {
+        return res.redirect('/auth/login');
+    }
+
+    const productId = req.params.id;
+
+    db.get(`SELECT * FROM products WHERE id = ?`, [productId], (err, product) => {
         if (err || !product) {
-            return res.send('Product not found');
+            return res.sendStatus(404);
         }
-        res.render('edit_product', { product });
+
+        res.sendFile(path.join(__dirname, '../views/edit_product.html'));
     });
 });
 
 router.post('/edit/:id', (req, res) => {
+    const productId = req.params.id;
     const { name, image, description, price } = req.body;
 
-    db.run('UPDATE products SET name = ?, image = ?, description = ?, price = ? WHERE id = ?', 
-    [name, image, description, price, req.params.id], function(err) {
+    db.run(`UPDATE products SET name = ?, image = ?, description = ?, price = ? WHERE id = ?`, [name, image, description, price, productId], (err) => {
         if (err) {
-            return res.send('Error updating product');
+            return res.redirect(`/product/edit/${productId}`);
         }
         res.redirect('/product');
     });
 });
 
 router.post('/delete/:id', (req, res) => {
-    db.run('DELETE FROM products WHERE id = ?', [req.params.id], function(err) {
+    const productId = req.params.id;
+
+    db.run(`DELETE FROM products WHERE id = ?`, [productId], (err) => {
         if (err) {
-            return res.send('Error deleting product');
+            return res.sendStatus(500);
         }
         res.redirect('/product');
     });

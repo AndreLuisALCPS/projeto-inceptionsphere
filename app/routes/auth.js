@@ -2,38 +2,38 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 const bcrypt = require('bcrypt');
+const path = require('path');
 
 router.get('/register', (req, res) => {
-    res.render('register');
+    res.sendFile(path.join(__dirname, '../views/register.html'));
 });
 
 router.post('/register', (req, res) => {
     const { email, nickname, password, country } = req.body;
-    const hash = bcrypt.hashSync(password, 10);
+    const hashedPassword = bcrypt.hashSync(password, 10);
 
-    db.run('INSERT INTO users (email, nickname, password, country) VALUES (?, ?, ?, ?)', 
-    [email, nickname, hash, country], function(err) {
+    db.run(`INSERT INTO users (email, nickname, password, country) VALUES (?, ?, ?, ?)`, [email, nickname, hashedPassword, country], (err) => {
         if (err) {
-            return res.send('Error registering user');
+            return res.redirect('/auth/register');
         }
         res.redirect('/auth/login');
     });
 });
 
 router.get('/login', (req, res) => {
-    res.render('login');
+    res.sendFile(path.join(__dirname, '../views/login.html'));
 });
 
 router.post('/login', (req, res) => {
     const { email, password } = req.body;
 
-    db.get('SELECT * FROM users WHERE email = ?', [email], (err, user) => {
+    db.get(`SELECT * FROM users WHERE email = ?`, [email], (err, user) => {
         if (err || !user || !bcrypt.compareSync(password, user.password)) {
-            return res.send('Invalid credentials');
+            return res.redirect('/auth/login');
         }
 
-        req.session.userId = user.id;
-        res.redirect('/auth/profile');
+        req.session.user = user;
+        res.redirect('/profile');
     });
 });
 
@@ -43,17 +43,11 @@ router.get('/logout', (req, res) => {
 });
 
 router.get('/profile', (req, res) => {
-    if (!req.session.userId) {
+    if (!req.session.user) {
         return res.redirect('/auth/login');
     }
 
-    db.get('SELECT * FROM users WHERE id = ?', [req.session.userId], (err, user) => {
-        if (err || !user) {
-            return res.send('User not found');
-        }
-
-        res.render('profile', { user });
-    });
+    res.sendFile(path.join(__dirname, '../views/profile.html'));
 });
 
 module.exports = router;

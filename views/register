@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">Início</a>
+        <a href="/auth/login">Login</a>
+    </div>
+    <div class="container">
+        <h1>Registrar</h1>
+        <form action="/auth/register" method="POST">
+            <label for="email">Endereço de email</label>
+            <input type="email" name="email" required>
+            <label for="nickname">Apelido</label>
+            <input type="text" name="nickname" required>
+            <label for="password">Senha</label>
+            <input type="password" name="password" required>
+            <label for="country">País</label>
+            <input type="text" name="country" required>
+            <button type="submit">Registrar</button>
+        </form>
+    </div>
+    <script src="/js/auth.js"></script>
+</body>
+</html>
+

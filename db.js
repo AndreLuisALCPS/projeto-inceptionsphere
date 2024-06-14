@@ -2,20 +2,24 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database(':memory:');
 
 db.serialize(() => {
+    // Tabela de usuários
     db.run(`CREATE TABLE users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        email TEXT UNIQUE,
-        nickname TEXT,
-        password TEXT,
-        country TEXT
+        email TEXT NOT NULL UNIQUE,
+        nickname TEXT NOT NULL,
+        password TEXT NOT NULL,
+        country TEXT NOT NULL
     )`);
 
+    // Tabela de produtos
     db.run(`CREATE TABLE products (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        image TEXT,
-        description TEXT,
-        price REAL
+        name TEXT NOT NULL,
+        image TEXT NOT NULL,
+        description TEXT NOT NULL,
+        price REAL NOT NULL,
+        user_id INTEGER,
+        FOREIGN KEY (user_id) REFERENCES users(id)
     )`);
 });
 

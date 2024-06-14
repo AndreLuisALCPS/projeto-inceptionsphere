@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Produto</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">Início</a>
+        <a href="/product">Ver Produtos</a>
+        <a href="/auth/logout">Logout</a>
+    </div>
+    <div class="container">
+        <h1>Adicionar Produto</h1>
+        <form action="/product/add" method="POST">
+            <label for="name">Nome do Produto</label>
+            <input type="text" name="name" required>
+            <label for="image">URL da Imagem</label>
+            <input type="text" name="image" required>
+            <label for="description">Descrição</label>
+            <textarea name="description" required></textarea>
+            <label for="price">Preço</label>
+            <input type="number" step="0.01" name="price" required>
+            <button type="submit">Adicionar</button>
+        </form>
+    </div>
+    <script src="/js/main.js"></script>
+</body>
+</html>

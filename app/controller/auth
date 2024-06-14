@@ -1,0 +1,12 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Código para manipulação de autenticação
+    if (document.getElementById('user-email')) {
+        fetch('/auth/profile')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('user-email').textContent = data.email;
+                document.getElementById('user-nickname').textContent = data.nickname;
+                document.getElementById('user-country').textContent = data.country;
+            });
+    }
+});
