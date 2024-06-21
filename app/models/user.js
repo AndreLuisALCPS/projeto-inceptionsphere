@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const database = require('../db');
+const database = require('../db'); // Ensure db.js exports a Sequelize instance
 
 const User = database.define('usuario', {
     id: {
@@ -13,8 +13,8 @@ const User = database.define('usuario', {
         allowNull: false,
         unique: true
     },
-    senha: {
-        type: Sequelize.STRING,
+    password: {
+        type: Sequelize.STRING, // Renamed to 'password' to match bcrypt hash
         allowNull: false
     },
     nickname: {

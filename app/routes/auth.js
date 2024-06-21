@@ -1,40 +1,51 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db');
 const bcrypt = require('bcrypt');
 const path = require('path');
+const User = require('../models/user'); // Ensure User model is correctly defined
 
 router.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, '../views/register.html'));
 });
 
-router.post('/register', (req, res) => {
-    const { email, nickname, password, country } = req.body;
-    const hashedPassword = bcrypt.hashSync(password, 10);
+router.post('/register', async (req, res) => {
+    try {
+        const { email, nickname, password, country } = req.body;
+        const hashedPassword = bcrypt.hashSync(password, 10);
 
-    db.run(`INSERT INTO users (email, nickname, password, country) VALUES (?, ?, ?, ?)`, [email, nickname, hashedPassword, country], (err) => {
-        if (err) {
-            return res.redirect('/auth/register.html');
-        }
+        await User.create({
+            email,
+            nickname,
+            password: hashedPassword,
+            country
+        });
+
         res.redirect('/auth/login');
-    });
+    } catch (err) {
+        console.error(err);
+        res.redirect('/auth/register');
+    }
 });
 
 router.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../views/login.html'));
 });
 
-router.post('/login', (req, res) => {
-    const { email, password } = req.body;
+router.post('/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
 
-    db.get(`SELECT * FROM users WHERE email = ?`, [email], (err, user) => {
-        if (err || !user || !bcrypt.compareSync(password, user.password)) {
-            return res.redirect('/auth/login.html');
+        const user = await User.findOne({ where: { email } });
+        if (!user || !bcrypt.compareSync(password, user.password)) {
+            return res.redirect('/auth/login');
         }
 
         req.session.user = user;
-        res.redirect('/profile');
-    });
+        res.redirect('/auth/profile');
+    } catch (err) {
+        console.error(err);
+        res.redirect('/auth/login');
+    }
 });
 
 router.get('/logout', (req, res) => {
@@ -44,10 +55,21 @@ router.get('/logout', (req, res) => {
 
 router.get('/profile', (req, res) => {
     if (!req.session.user) {
-        return res.redirect('/auth/login.html');
+        return res.redirect('/auth/login');
     }
 
     res.sendFile(path.join(__dirname, '../views/profile.html'));
+});
+
+router.get('/user-info', (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    res.json({
+        email: req.session.user.email,
+        nickname: req.session.user.nickname,
+        country: req.session.user.country
+    });
 });
 
 module.exports = router;

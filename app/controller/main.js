@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     if (document.getElementById('products-list')) {
-        fetch('/product')
+        fetch('/product/products')  // Correct route
             .then(response => response.json())
             .then(data => {
                 const productsList = document.getElementById('products-list');
-                data.products.forEach(product => {
+                data.forEach(product => {  // Adjusted to match the expected data structure
                     const productItem = document.createElement('li');
                     productItem.innerHTML = `
                         <h2>${product.name}</h2>
@@ -21,3 +21,4 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 });
+

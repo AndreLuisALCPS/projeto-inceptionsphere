@@ -4,21 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil</title>
-    <link rel="stylesheet" href="public/styles.css">
+    <link rel="stylesheet" href="/public/styles.css">
+    <style>
+        body {
+            background-color: #0e0e1d;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+        .navbar {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            position: absolute;
+            top: 0;
+            background-color: #28a745;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+        .form-container {
+            background-color: #1e1e2d;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .profile-circle {
+            background-color: #28a745;
+            padding: 50px;
+            border-radius: 50%;
+            text-align: center;
+        }
+        .profile-circle h1, .profile-circle p, .profile-circle a {
+            margin: 10px 0;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        .buttons a {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            margin: 0 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        .buttons a:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>
     <div class="navbar">
         <a href="/">Início</a>
-        <a href="/product">Ver Produtos</a>
+        <a href="/auth/products">Ver Produtos</a>
         <a href="/auth/logout">Logout</a>
     </div>
-    <div class="container">
+    <div class="container profile-circle">
         <h1>Perfil</h1>
         <p>Email: <span id="user-email"></span></p>
         <p>Apelido: <span id="user-nickname"></span></p>
         <p>País: <span id="user-country"></span></p>
-        <a href="/auth/logout">Logout</a>
+        <div class="buttons">
+            <a href="/auth/product">Adicionar Produto</a>
+            <a href="/auth/logout">Logout</a>
+        </div>
     </div>
-    <script src="/js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/auth/user-info')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('user-email').innerText = data.email;
+                    document.getElementById('user-nickname').innerText = data.nickname;
+                    document.getElementById('user-country').innerText = data.country;
+                });
+        });
+    </script>
 </body>
 </html>

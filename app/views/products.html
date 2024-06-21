@@ -3,19 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produtos</title>
-    <link rel="stylesheet" href="public/styles.css">
+    <title>Products</title>
+    <link rel="stylesheet" href="/public/styles.css">
 </head>
 <body>
     <div class="navbar">
         <a href="/">Início</a>
-        <a href="/product/add">Adicionar Produto</a>
-        <a href="/auth/logout">Logout</a>
+        <a href="/auth/login">Login</a>
     </div>
     <div class="container">
-        <h1>Produtos</h1>
-        <ul id="products-list"></ul>
+        <h1>Products</h1>
+        <ul id="products-list">
+            {{#products}}
+            <li>
+                <h2>{{name}}</h2>
+                <img src="{{image}}" alt="{{name}}">
+                <p>{{description}}</p>
+                <p>Preço: R${{price}}</p>
+                <a href="/product/edit/{{id}}">Editar</a>
+                <form action="/product/delete/{{id}}" method="POST" style="display:inline;">
+                    <button type="submit">Excluir</button>
+                </form>
+            </li>
+            {{/products}}
+        </ul>
     </div>
-    <script src="/js/auth.js"></script>
 </body>
 </html>

@@ -4,7 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar Produto</title>
-    <link rel="stylesheet" href="public/styles.css">
+    <link rel="stylesheet" href="/public/styles.css">
+    <style>
+        body {
+            background-color: #0e0e1d;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+        .navbar {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            position: absolute;
+            top: 0;
+            background-color: #28a745;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+        .form-container {
+            background-color: #1e1e2d;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+    </style>
 </head>
 <body>
     <div class="navbar">
@@ -12,40 +45,7 @@
         <a href="/product">Ver Produtos</a>
         <a href="/auth/logout">Logout</a>
     </div>
-    <div class="container">
-<style>
-        body {
-            background-color: #0e0e1d;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column; 
-            height: 100vh;
-            margin: 0;
-          }
-          .navbar {
-            width: 100%;
-            display: flex;
-            justify-content: center; 
-            padding: 10px 0;
-            position: absolute;
-            top: 0;
-            background-color: #28a745; 
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-          }
-          .navbar a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-          }
-          .form-container {
-            background-color: #1e1e2d;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-          }
-      </style>
+    <div class="container form-container">
         <h1>Adicionar Produto</h1>
         <form action="/product/add" method="POST">
             <label for="name">Nome do Produto</label>

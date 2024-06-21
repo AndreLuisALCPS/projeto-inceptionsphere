@@ -20,14 +20,11 @@ const Product = database.define('product', {
         type: Sequelize.FLOAT,
         allowNull: false
     },
-    images: {
+    image: {
         type: Sequelize.STRING,
-        allowNull: false
-    },
-    type: {
-        type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
     }
 });
 
 module.exports = Product;
+
