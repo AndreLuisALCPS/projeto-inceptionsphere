@@ -72,4 +72,12 @@ router.get('/user-info', (req, res) => {
     });
 });
 
+router.get('/product', (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/auth/login');
+    }
+    res.sendFile(path.join(__dirname, '../views/product.html'));
+});
+
 module.exports = router;
+

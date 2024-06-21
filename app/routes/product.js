@@ -1,14 +1,24 @@
+// product.js (Express route handler)
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
-router.get('/products', async (req, res) => {
+
+router.post('/add', async (req, res) => {
+    const { name, image, description, price } = req.body;
+
     try {
-        const products = await Product.findAll();
-        res.json(products);
+        const newProduct = await Product.create({
+            name,
+            image,
+            description,
+            price
+        });
+
+        res.status(201).json(newProduct); // Respond with the created product
     } catch (error) {
-        res.status(500).json({ error: 'An error occurred while retrieving products' });
+        console.error('Error adding product:', error);
+        res.status(500).json({ error: 'Failed to add product' });
     }
 });
 
 module.exports = router;
-

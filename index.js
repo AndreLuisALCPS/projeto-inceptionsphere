@@ -1,3 +1,4 @@
+// index.js
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
@@ -22,11 +23,11 @@ app.use(session({
 }));
 
 const indexRouter = require('./app/routes/index');
-const authRouter = require('./app/routes/auth'); // Ensure path is correct
-const productRouter = require('./app/routes/product'); // Ensure path is correct
+const authRouter = require('./app/routes/auth');
+const productRouter = require('./app/routes/product');
 
 app.use('/', indexRouter);
-app.use('/auth', authRouter); // Ensure this line is present and correct
+app.use('/auth', authRouter);
 app.use('/product', productRouter);
 
 db.sync(() => console.log(`Database: ON`));
