@@ -14,7 +14,7 @@ router.post('/register', (req, res) => {
 
     db.run(`INSERT INTO users (email, nickname, password, country) VALUES (?, ?, ?, ?)`, [email, nickname, hashedPassword, country], (err) => {
         if (err) {
-            return res.redirect('/auth/register');
+            return res.redirect('/auth/register.html');
         }
         res.redirect('/auth/login');
     });
@@ -29,7 +29,7 @@ router.post('/login', (req, res) => {
 
     db.get(`SELECT * FROM users WHERE email = ?`, [email], (err, user) => {
         if (err || !user || !bcrypt.compareSync(password, user.password)) {
-            return res.redirect('/auth/login');
+            return res.redirect('/auth/login.html');
         }
 
         req.session.user = user;
@@ -44,7 +44,7 @@ router.get('/logout', (req, res) => {
 
 router.get('/profile', (req, res) => {
     if (!req.session.user) {
-        return res.redirect('/auth/login');
+        return res.redirect('/auth/login.html');
     }
 
     res.sendFile(path.join(__dirname, '../views/profile.html'));

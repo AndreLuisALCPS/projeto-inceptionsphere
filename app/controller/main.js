@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Código para manipulação de produtos
     if (document.getElementById('products-list')) {
         fetch('/product')
             .then(response => response.json())

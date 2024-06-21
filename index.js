@@ -12,7 +12,7 @@ app.set('views', path.join(__dirname, 'app', 'views'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 app.use(session({
     secret: 'inceptionsphere_secret',
@@ -28,6 +28,8 @@ const productRouter = require('./app/routes/product');
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use('/product', productRouter);
+
+db.sync(() => console.log(`Banco de dados: ON`));
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
