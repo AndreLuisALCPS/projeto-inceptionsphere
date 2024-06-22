@@ -1,33 +1,26 @@
-// Controller product.js
-const Produto = require('./model/product');
+// models/product.js
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database'); // Adjust the path as needed
 
-function cadastrarProduto(req, res) {
-    let produto = {
-        name: req.body.name,
-        image: req.body.image,
-        description: req.body.description,
-        price: req.body.price
+const Product = sequelize.define('Product', {
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    image: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    description: {
+        type: DataTypes.TEXT,
+        allowNull: false
+    },
+    price: {
+        type: DataTypes.FLOAT,
+        allowNull: false
     }
-    
-    Produto.create(produto).then(() => {
-        let sucesso = true;
-        res.render("product.html", { sucesso });
-    }).catch((err) => {
-        console.log(err);
-        let erro = true;
-        res.render("product.html", { erro });
-    });
-}
+}, {
+    tableName: 'products'
+});
 
-function listarProdutos(req, res) {
-    Produto.findAll().then((produtos) => {
-        res.json(produtos);
-    }).catch((err) => {
-        res.json(err);
-    });
-}
-
-module.exports = {
-    cadastrarProduto,
-    listarProdutos
-}
+module.exports = Product;

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const path = require('path');
-const User = require('../models/user'); // Ensure User model is correctly defined
+const User = require('../models/user'); 
 
 router.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, '../views/register.html'));

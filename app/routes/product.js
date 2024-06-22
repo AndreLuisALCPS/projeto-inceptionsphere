@@ -1,4 +1,4 @@
-// product.js (Express route handler)
+// routes/product.js
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
@@ -9,15 +9,15 @@ router.post('/add', async (req, res) => {
     try {
         const newProduct = await Product.create({
             name,
-            image,
+            image, // Ensure this matches the model field
             description,
             price
         });
 
-        res.status(201).json(newProduct); // Respond with the created product
+        res.status(201).redirect('/product');
     } catch (error) {
         console.error('Error adding product:', error);
-        res.status(500).json({ error: 'Failed to add product' });
+        res.status(500).send('Failed to add product');
     }
 });
 
