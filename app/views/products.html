@@ -3,65 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products</title>
+    <title>Editar Produto</title>
     <link rel="stylesheet" href="/public/styles.css">
-    <style>
-        body { background-color: #0e0e1d; color: white; display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100vh; margin: 0; }
-        .navbar { width: 100%; display: flex; justify-content: center; padding: 10px 0; position: absolute; top: 0; background-color: #28a745; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); }
-        .navbar a { color: white; text-decoration: none; padding: 10px 20px; }
-        .container { display: flex; flex-direction: column; align-items: center; }
-        ul { list-style-type: none; padding: 0; }
-        li { background-color: #1e1e2d; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); margin-bottom: 20px; text-align: center; }
-        img { max-width: 100%; height: auto; border-radius: 10px; }
-    </style>
 </head>
 <body>
     <div class="navbar">
         <a href="/">Início</a>
-        <a href="/auth/login">Login</a>
+        <a href="/auth/products">Ver Produtos</a>
+        <a href="/auth/logout">Logout</a>
     </div>
     <div class="container">
-        <h1>Products</h1>
-        <ul id="products-list">
-            {{#products}}
-            <li data-id="{{id}}">
-                <h2>{{name}}</h2>
-                <img src="{{image}}" alt="{{name}}">
-                <p>{{description}}</p>
-                <p>Preço: R${{price}}</p>
-                <a href="/edit_product/{{id}}">Editar</a>
-                <button class="delete-button">Excluir</button>
-            </li>
-            {{/products}}
-        </ul>
+        <h1>Editar Produto</h1>
+        <form action="/auth/edit_product/{{product.id}}" method="POST">
+            <label for="name">Nome do Produto</label>
+            <input type="text" name="name" value="{{product.name}}" required>
+            <label for="image">URL da Imagem</label>
+            <input type="text" name="image" value="{{product.image}}" required>
+            <label for="description">Descrição</label>
+            <textarea name="description" required>{{product.description}}</textarea>
+            <label for="price">Preço</label>
+            <input type="number" step="0.01" name="price" value="{{product.price}}" required>
+            <button type="submit">Atualizar</button>
+        </form>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const deleteButtons = document.querySelectorAll('.delete-button');
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const li = this.closest('li');
-                    const productId = li.getAttribute('data-id');
-                    
-                    if (confirm('Are you sure you want to delete this product?')) {
-                        fetch(`/product/delete/${productId}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                        .then(response => {
-                            if (response.ok) {
-                                li.remove();
-                            } else {
-                                alert('Failed to delete product');
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="/js/auth.js"></script>
 </body>
 </html>

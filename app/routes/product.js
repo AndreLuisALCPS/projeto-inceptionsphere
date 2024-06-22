@@ -4,8 +4,26 @@ const productController = require('../controller/product');
 
 router.get('/products', productController.listProducts);
 router.post('/product', productController.addProduct);
-router.post('/edit_product', productController.editProduct);
 router.delete('/delete/:id', productController.deleteProduct);
-router.get('/edit_product/:id', productController.renderEditProduct);  // Ensure this line exists
+
+router.get('/edit_product/:id', async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/auth/login');
+    }
+
+    try {
+        const { id } = req.params;
+        const product = await Product.findByPk(id);
+        
+        if (product) {
+            res.render('edit_product', { product });
+        } else {
+            res.redirect('/auth/products');
+        }
+    } catch (err) {
+        console.error(err);
+        res.redirect('/auth/products');
+    }
+});
 
 module.exports = router;

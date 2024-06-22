@@ -9,12 +9,12 @@
 <body>
     <div class="navbar">
         <a href="/">Início</a>
-        <a href="/product">Ver Produtos</a>
+        <a href="/auth/product">Ver Produtos</a>
         <a href="/auth/logout">Logout</a>
     </div>
     <div class="container">
         <h1>Editar Produto</h1>
-        <form action="/edit_product/{{product.id}}" method="POST">
+        <form action="/auth/edit_product/{{product.id}}" method="POST">
             <label for="name">Nome do Produto</label>
             <input type="text" name="name" value="{{product.name}}" required>
             <label for="image">URL da Imagem</label>
