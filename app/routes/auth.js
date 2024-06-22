@@ -85,5 +85,28 @@ router.get('/products', (req, res) => {
     }
     res.sendFile(path.join(__dirname, '../views/products.html'));
 });
+
+router.post('/product', async (req, res) => {
+    try {
+        const { name, image, description, price } = req.body;
+        await Product.create({ name, image, description, price });
+        res.redirect('/auth/products');
+    } catch (err) {
+        console.error(err);
+        res.redirect('/auth/products');
+    }
+});
+
+router.get('/products', async (req, res) => {
+    try {
+        const products = await Product.findAll();
+        res.render('products', { products });
+    } catch (err) {
+        console.error(err);
+        res.redirect('/');
+    }
+});
+
+
 module.exports = router;
 

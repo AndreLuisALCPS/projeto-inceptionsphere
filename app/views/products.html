@@ -6,49 +6,13 @@
     <title>Products</title>
     <link rel="stylesheet" href="/public/styles.css">
     <style>
-        body {
-            background-color: #0e0e1d;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            height: 100vh;
-            margin: 0;
-        }
-        .navbar {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            padding: 10px 0;
-            position: absolute;
-            top: 0;
-            background-color: #28a745;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-        }
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-        }
-        .form-container {
-            background-color: #1e1e2d;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        label, input, textarea, button {
-            margin-bottom: 10px;
-        }
+        body { background-color: #0e0e1d; color: white; display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100vh; margin: 0; }
+        .navbar { width: 100%; display: flex; justify-content: center; padding: 10px 0; position: absolute; top: 0; background-color: #28a745; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); }
+        .navbar a { color: white; text-decoration: none; padding: 10px 20px; }
+        .container { display: flex; flex-direction: column; align-items: center; }
+        ul { list-style-type: none; padding: 0; }
+        li { background-color: #1e1e2d; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); margin-bottom: 20px; text-align: center; }
+        img { max-width: 100%; height: auto; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -59,18 +23,18 @@
     <div class="container">
         <h1>Products</h1>
         <ul id="products-list">
-            {{#products}}
-            <li>
-                <h2>{{name}}</h2>
-                <img src="{{image}}" alt="{{name}}">
-                <p>{{description}}</p>
-                <p>Preço: R${{price}}</p>
-                <a href="/product/edit_product/{{id}}">Editar</a>
-                <form action="/product/delete/{{id}}" method="POST" style="display:inline;">
-                    <button type="submit">Excluir</button>
-                </form>
-            </li>
-            {{/products}}
+            <% products.forEach(product => { %>
+                <li>
+                    <h2><%= product.name %></h2>
+                    <img src="<%= product.image %>" alt="<%= product.name %>">
+                    <p><%= product.description %></p>
+                    <p>Preço: R$<%= product.price %></p>
+                    <a href="/product/edit_product/<%= product.id %>">Editar</a>
+                    <form action="/product/delete/<%= product.id %>" method="POST" style="display:inline;">
+                        <button type="submit">Excluir</button>
+                    </form>
+                </li>
+            <% }); %>
         </ul>
     </div>
 </body>

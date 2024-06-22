@@ -14,7 +14,7 @@ const User = database.define('usuario', {
         unique: true
     },
     password: {
-        type: Sequelize.STRING, // Renamed to 'password' to match bcrypt hash
+        type: Sequelize.STRING,
         allowNull: false
     },
     nickname: {

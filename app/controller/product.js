@@ -1,6 +1,6 @@
 // models/product.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database'); // Adjust the path as needed
+const sequelize = require('../config/database'); 
 
 const Product = sequelize.define('Product', {
     name: {
