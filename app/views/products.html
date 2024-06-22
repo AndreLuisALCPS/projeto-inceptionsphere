@@ -5,6 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products</title>
     <link rel="stylesheet" href="/public/styles.css">
+    <style>
+        body {
+            background-color: #0e0e1d;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+        .navbar {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            position: absolute;
+            top: 0;
+            background-color: #28a745;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+        .form-container {
+            background-color: #1e1e2d;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label, input, textarea, button {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="navbar">
@@ -20,7 +65,7 @@
                 <img src="{{image}}" alt="{{name}}">
                 <p>{{description}}</p>
                 <p>Preço: R${{price}}</p>
-                <a href="/product/edit/{{id}}">Editar</a>
+                <a href="/product/edit_product/{{id}}">Editar</a>
                 <form action="/product/delete/{{id}}" method="POST" style="display:inline;">
                     <button type="submit">Excluir</button>
                 </form>
