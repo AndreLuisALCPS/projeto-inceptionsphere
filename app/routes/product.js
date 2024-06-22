@@ -1,24 +1,11 @@
-// routes/product.js
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/product');
+const productController = require('../controller/product');
 
-router.post('/add', async (req, res) => {
-    const { name, image, description, price } = req.body;
-
-    try {
-        const newProduct = await Product.create({
-            name,
-            image, 
-            description,
-            price
-        });
-
-        res.status(201).redirect('/product');
-    } catch (error) {
-        console.error('Error adding product:', error);
-        res.status(500).send('Failed to add product');
-    }
-});
+router.get('/products', productController.listProducts);
+router.post('/product', productController.addProduct);
+router.post('/edit_product', productController.editProduct);
+router.delete('/delete/:id', productController.deleteProduct);
+router.get('/edit_product/:id', productController.renderEditProduct);  // Ensure this line exists
 
 module.exports = router;

@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const mustacheExpress = require('mustache-express');
+const methodOverride = require('method-override');  
 const db = require('./app/db');
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(methodOverride('_method'));  
 app.use(session({
     secret: 'inceptionsphere_secret',
     name: 'sessionId',

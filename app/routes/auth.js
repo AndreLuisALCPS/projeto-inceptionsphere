@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const path = require('path');
-const User = require('../models/user'); 
+const User = require('../models/user');
+const Product = require('../models/product'); 
 
 router.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, '../views/register.html'));
@@ -79,11 +80,17 @@ router.get('/product', (req, res) => {
     res.sendFile(path.join(__dirname, '../views/product.html'));
 });
 
-router.get('/products', (req, res) => {
+router.get('/products', async (req, res) => {
     if (!req.session.user) {
         return res.redirect('/auth/login');
     }
-    res.sendFile(path.join(__dirname, '../views/products.html'));
+    try {
+        const products = await Product.findAll();
+        res.render('products', { products });
+    } catch (err) {
+        console.error(err);
+        res.redirect('/');
+    }
 });
 
 router.post('/product', async (req, res) => {
@@ -97,16 +104,4 @@ router.post('/product', async (req, res) => {
     }
 });
 
-router.get('/products', async (req, res) => {
-    try {
-        const products = await Product.findAll();
-        res.render('products', { products });
-    } catch (err) {
-        console.error(err);
-        res.redirect('/');
-    }
-});
-
-
 module.exports = router;
-
