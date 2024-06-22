@@ -21,43 +21,18 @@ exports.listProducts = async (req, res) => {
     }
 };
 
-exports.editProduct = async (req, res) => {
-    try {
-        const { id, name, image, description, price } = req.body;
-        await Product.update({ name, image, description, price }, {
-            where: { id }
-        });
-        res.redirect('/auth/products');
-    } catch (err) {
-        console.error(err);
-        res.redirect('/auth/products');
-    }
-};
-
 exports.deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        await Product.destroy({
+        const deletedCount = await Product.destroy({
             where: { id }
         });
+        if (deletedCount === 0) {
+            return res.status(404).send({ message: 'Product not found' });
+        }
         res.status(200).send({ message: 'Product deleted successfully' });
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: 'Failed to delete product' });
-    }
-};
-
-exports.renderEditProduct = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const product = await Product.findByPk(id);
-        if (product) {
-            res.render('edit_product', { product });
-        } else {
-            res.redirect('/auth/products');
-        }
-    } catch (err) {
-        console.error(err);
-        res.redirect('/auth/products');
     }
 };

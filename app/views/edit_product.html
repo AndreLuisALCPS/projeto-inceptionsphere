@@ -3,38 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Produto</title>
-    <link rel="stylesheet" href="/public/styles.css">
+    <title>Edit Product</title>
     <style>
-        body { background-color: #0e0e1d; color: white; display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100vh; margin: 0; }
-        .navbar { width: 100%; display: flex; justify-content: center; padding: 10px 0; position: absolute; top: 0; background-color: #28a745; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); }
-        .navbar a { color: white; text-decoration: none; padding: 10px 20px; }
-        .form-container { background-color: #1e1e2d; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); }
-        .container { display: flex; flex-direction: column; align-items: center; }
-        form { display: flex; flex-direction: column; }
-        label, input, textarea, button { margin-bottom: 10px; }
+        body {
+            background-color: #0e0e1d;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 50%;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #1e1e2d;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        label {
+            margin-bottom: 10px;
+            display: block;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <a href="/">Início</a>
-        <a href="/auth/product">Ver Produtos</a>
-        <a href="/auth/logout">Logout</a>
-    </div>
     <div class="container">
-        <h1>Editar Produto</h1>
-        <form action="/auth/edit_product/{{product.id}}" method="POST">
-            <label for="name">Nome do Produto</label>
-            <input type="text" name="name" value="{{product.name}}" required>
-            <label for="image">URL da Imagem</label>
-            <input type="text" name="image" value="{{product.image}}" required>
-            <label for="description">Descrição</label>
-            <textarea name="description" required>{{product.description}}</textarea>
-            <label for="price">Preço</label>
-            <input type="number" step="0.01" name="price" value="{{product.price}}" required>
-            <button type="submit">Atualizar</button>
+        <h1>Edit Product</h1>
+        <form action="/auth/update_product/{{ product.id }}" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" value="{{ product.name }}" required>
+            
+            <label for="image">Image URL:</label>
+            <input type="text" id="image" name="image" value="{{ product.image }}" required>
+            
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" required>{{ product.description }}</textarea>
+            
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" value="{{ product.price }}" step="0.01" required>
+            
+            <button type="submit">Update Product</button>
         </form>
     </div>
-    <script src="/js/auth.js"></script>
 </body>
 </html>

@@ -61,7 +61,6 @@ router.get('/profile', (req, res) => {
 
     res.sendFile(path.join(__dirname, '../views/profile.html'));
 });
-
 router.get('/user-info', (req, res) => {
     if (!req.session.user) {
         return res.status(401).json({ error: 'Unauthorized' });
@@ -104,6 +103,39 @@ router.post('/product', async (req, res) => {
     }
 });
 
+router.get('/edit_product/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const product = await Product.findByPk(id);
+        
+        if (!product) {
+            return res.status(404).send({ message: 'Product not found' });
+        }
+
+        res.render('edit_product', { product });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({ message: 'Failed to fetch product details' });
+    }
+});
+
+router.post('/update_product/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, image, description, price } = req.body;
+
+        const updatedProduct = await Product.update(
+            { name, image, description, price },
+            { where: { id } }
+        );
+
+        res.redirect('/auth/products');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({ message: 'Failed to update product' });
+    }
+});
+
 router.get('/edit-profile', async (req, res) => {
     try {
         if (!req.session.user) {
@@ -118,9 +150,10 @@ router.get('/edit-profile', async (req, res) => {
         res.sendFile(path.join(__dirname, '../views/edit-profile.html'));
     } catch (err) {
         console.error(err);
-        res.redirect('/auth/profile');
+        res.redirect('/auth/profile'); 
     }
 });
+
 
 router.post('/edit-profile', async (req, res) => {
     try {
@@ -134,6 +167,7 @@ router.post('/edit-profile', async (req, res) => {
         await User.update({ email, nickname, country }, {
             where: { id: userId }
         });
+
 
         const updatedUser = await User.findByPk(userId);
         if (!updatedUser) {
@@ -149,4 +183,6 @@ router.post('/edit-profile', async (req, res) => {
     }
 });
 
+
 module.exports = router;
+

@@ -27,6 +27,13 @@ const indexRouter = require('./app/routes/index');
 const authRouter = require('./app/routes/auth');
 const productRouter = require('./app/routes/product');
 
+ app.post('/delete_product/:productId', (req, res) => {
+    const productId = parseInt(req.params.productId);
+    products = products.filter(product => product.id !== productId);
+
+    res.json({ message: 'Product deleted successfully' });
+});
+
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use('/product', productRouter);

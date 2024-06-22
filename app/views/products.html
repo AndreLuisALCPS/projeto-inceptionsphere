@@ -13,6 +13,9 @@
         ul { list-style-type: none; padding: 0; }
         li { background-color: #1e1e2d; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); margin-bottom: 20px; text-align: center; }
         img { max-width: 100%; height: auto; border-radius: 10px; }
+        .button-container { margin-top: 20px; }
+        .button-container button { background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        .button-container button:hover { background-color: #0056b3; }
     </style>
 </head>
 <body>
@@ -29,8 +32,10 @@
                 <img src="{{image}}" alt="{{name}}">
                 <p>{{description}}</p>
                 <p>Preço: R${{price}}</p>
-                <a href="/product/edit/{{id}}">Editar</a>
-                <button class="delete-button">Excluir</button>
+                <div class="button-container">
+                    <button class="delete-button">Excluir</button>
+                    <button class="edit-button">Editar</button>
+                </div>
             </li>
             {{/products}}
         </ul>
@@ -38,6 +43,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const deleteButtons = document.querySelectorAll('.delete-button');
+            const editButtons = document.querySelectorAll('.edit-button');
+            
             deleteButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const li = this.closest('li');
@@ -54,11 +61,24 @@
                             if (response.ok) {
                                 li.remove();
                             } else {
-                                alert('Failed to delete product');
+                                return response.json().then(data => {
+                                    throw new Error(data.message);
+                                });
                             }
                         })
-                        .catch(error => console.error('Error:', error));
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Failed to delete product');
+                        });
                     }
+                });
+            });
+            
+            editButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const li = this.closest('li');
+                    const productId = li.getAttribute('data-id');
+                    window.location.href = `/auth/edit_product/${productId}`;
                 });
             });
         });
