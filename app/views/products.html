@@ -24,18 +24,44 @@
         <h1>Products</h1>
         <ul id="products-list">
             {{#products}}
-            <li>
+            <li data-id="{{id}}">
                 <h2>{{name}}</h2>
                 <img src="{{image}}" alt="{{name}}">
                 <p>{{description}}</p>
                 <p>Preço: R${{price}}</p>
                 <a href="/product/edit/{{id}}">Editar</a>
-                <form action="/product/delete/{{id}}" method="POST" style="display:inline;">
-                    <button type="submit">Excluir</button>
-                </form>
+                <button class="delete-button">Excluir</button>
             </li>
             {{/products}}
         </ul>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteButtons = document.querySelectorAll('.delete-button');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const li = this.closest('li');
+                    const productId = li.getAttribute('data-id');
+                    
+                    if (confirm('Are you sure you want to delete this product?')) {
+                        fetch(`/product/delete/${productId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                li.remove();
+                            } else {
+                                alert('Failed to delete product');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

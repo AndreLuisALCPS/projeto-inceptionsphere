@@ -104,4 +104,49 @@ router.post('/product', async (req, res) => {
     }
 });
 
+router.get('/edit-profile', async (req, res) => {
+    try {
+        if (!req.session.user) {
+            return res.redirect('/auth/login');
+        }
+
+        const user = await User.findByPk(req.session.user.id);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.sendFile(path.join(__dirname, '../views/edit-profile.html'));
+    } catch (err) {
+        console.error(err);
+        res.redirect('/auth/profile');
+    }
+});
+
+router.post('/edit-profile', async (req, res) => {
+    try {
+        if (!req.session.user) {
+            return res.redirect('/auth/login');
+        }
+
+        const { email, nickname, country } = req.body;
+        const userId = req.session.user.id;
+
+        await User.update({ email, nickname, country }, {
+            where: { id: userId }
+        });
+
+        const updatedUser = await User.findByPk(userId);
+        if (!updatedUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        req.session.user = updatedUser;
+
+        res.redirect('/auth/profile'); 
+    } catch (err) {
+        console.error(err);
+        res.redirect('/auth/profile'); 
+    }
+});
+
 module.exports = router;
