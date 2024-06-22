@@ -9,7 +9,7 @@ router.post('/add', async (req, res) => {
     try {
         const newProduct = await Product.create({
             name,
-            image, // Ensure this matches the model field
+            image, 
             description,
             price
         });
